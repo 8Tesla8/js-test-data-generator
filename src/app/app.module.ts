@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DataGeneratorService } from './services/data-generatro.service';
+import { MockDataGenerator } from './services/mock-data-generator.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,10 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    DataGeneratorService,
+    MockDataGenerator,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

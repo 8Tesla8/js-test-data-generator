@@ -1,0 +1,15 @@
+Users count: <input type="number" [(ngModel)]="usersCount">
+<button (click)="createUsers()">Generate Users</button>
+
+<br>
+
+Transactions count: <input type="number" [(ngModel)]="transactionCount">
+<button (click)="createTransactions()">Generate Transactions</button>
+
+<br>
+
+<h2>User list:</h2>
+<div *ngFor="let user of users">{{user| json}}</div>
+
+<h2>Transactions list:</h2>
+<div *ngFor="let transaction of transactions">{{transaction| json}}</div>
