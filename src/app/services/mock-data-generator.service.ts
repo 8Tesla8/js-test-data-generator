@@ -1,36 +1,112 @@
 import { Injectable } from '@angular/core';
+import {
+  BooleanParameters,
+  DateParameters,
+  NumberParameters,
+  StringCaseSensetiveOptions,
+  StringOptions,
+  StringParameters,
+} from '../models/mock-data-property-parameter.model';
 
 export enum DataType {
   Null = 'null',
   Undefined = 'undefined',
-
   Boolean = 'boolean',
   Date = 'date',
-
   Number = 'number',
-  NumberAsString = 'numberAsString',
-
-  NumberFloat = 'numberFloat',
-  NumberFloatAsString = 'numberFloatAsString',
-
-  StringWithNumber = 'stringWithNumber',
-  StringWithUppercase = 'stringWithUppercase',
-  StringOnlyLowercase = 'stringOnlyLowercase',
-
-  StringName = 'stringName',
-  StringNameOnlyUppercase = 'stringNameOnlyLowercase',
-  StringNameOnlyLowercase = 'stringNameOnlyLowercase',
-
-  Guid = 'guid',
+  String = 'string',
 }
 
 export class MockDataProperty {
   public propName: string;
   public dataType: DataType;
+  public parameter:
+    | StringParameters
+    | NumberParameters
+    | DateParameters
+    | BooleanParameters;
 }
 
 @Injectable()
 export class MockDataGenerator {
+  public create1(params: MockDataProperty[]): any {
+    let obj: any = new Object();
+
+    params.forEach((pr) => {
+      let type = pr.dataType;
+      let key = pr.propName;
+      let value = null;
+
+      if (type === DataType.Null) {
+        value = null;
+      } else if (type === DataType.Undefined) {
+        value = undefined;
+      } else if (type === DataType.Boolean) {
+        let toString = (pr.parameter as BooleanParameters)?.convertToString;
+        if (toString) {
+          value = this.generateRandomBoolean().toString();
+        } else {
+          value = this.generateRandomBoolean();
+        }
+      } else if (type === DataType.Date) {
+        let dateParam = pr.parameter as DateParameters;
+
+        let date = this.generateRandomDate(
+          dateParam.startDate,
+          dateParam.endDate
+        );
+
+        if (dateParam.convertToString) {
+          value = date.toString();
+        } else {
+          value = date;
+        }
+      } else if (type === DataType.Number) {
+        let numbParam = pr.parameter as NumberParameters;
+
+        let numb = this.generateRandomNumberBeetween(
+          numbParam.startNumber,
+          numbParam.endNumber,
+          numbParam.float,
+          numbParam.floatPrecisions
+        );
+
+        if (numbParam.convertToString) {
+          value = numb.toString();
+        } else {
+          value = numb;
+        }
+      } else if (type === DataType.String) {
+        let stringParam = pr.parameter as StringParameters;
+
+        let length = this.generateRandomNumberBeetween(
+          stringParam.minLength,
+          stringParam.maxLength,
+          false
+        );
+
+        if(stringParam.options === StringOptions.Guid){
+          value = this.generateRandomGuid();
+        }
+        else if(stringParam.options === StringOptions.Name){
+          value = this.generateRandomName(length, stringParam.caseSensitiveOptions);
+        }
+        else {
+          let allowDigits = stringParam.options === StringOptions.AllowDigits;
+          value = this.generateRandomString(length, stringParam.caseSensitiveOptions, allowDigits);
+        }
+
+
+      } else {
+        console.error('No implementation for type:' + type);
+      }
+
+      obj[key] = value;
+    });
+
+    return obj;
+  }
+
   public create(params: MockDataProperty[]): any {
     let obj: any = new Object();
 
@@ -56,17 +132,17 @@ export class MockDataGenerator {
           value = this.generateRandomNumberBeetween(1, 1000, false);
           break;
 
-        case DataType.NumberAsString:
-          value = this.generateRandomNumberBeetween(1, 1000, false).toString();
-          break;
+        // case DataType.NumberAsString:
+        //   value = this.generateRandomNumberBeetween(1, 1000, false).toString();
+        //   break;
 
-        case DataType.NumberFloat:
-          value = this.generateRandomNumberBeetween(1, 1000, true);
-          break;
+        // case DataType.NumberFloat:
+        //   value = this.generateRandomNumberBeetween(1, 1000, true);
+        //   break;
 
-        case DataType.NumberFloatAsString:
-          value = this.generateRandomNumberBeetween(1, 1000, true).toString();
-          break;
+        // case DataType.NumberFloatAsString:
+        //   value = this.generateRandomNumberBeetween(1, 1000, true).toString();
+        //   break;
 
         case DataType.Date:
           let today = new Date();
@@ -151,7 +227,8 @@ export class MockDataGenerator {
   public generateRandomNumberBeetween(
     from: number,
     to: number,
-    float: boolean
+    float: boolean,
+    floatPrecisions: number = 0
   ): number {
     let min = from;
     let max = to;
@@ -160,6 +237,9 @@ export class MockDataGenerator {
 
     if (!float) {
       num = Math.floor(num);
+    }
+    if (floatPrecisions > 0) {
+      num = parseFloat(num.toFixed(floatPrecisions));
     }
 
     return num;
@@ -172,8 +252,7 @@ export class MockDataGenerator {
 
   public generateRandomName(
     length: number,
-    onlyUppercase: boolean,
-    uppercaseFirstChar: boolean
+    caseSensetiveOptions: StringCaseSensetiveOptions
   ): string {
     let str = '';
 
@@ -199,14 +278,14 @@ export class MockDataGenerator {
         char = firstPart.charAt(Math.floor(Math.random() * firstPart.length));
       }
 
-      if (onlyUppercase) {
+      if (caseSensetiveOptions === StringCaseSensetiveOptions.AllUppercase) {
         char = char.toUpperCase();
       }
 
       str += char;
     }
 
-    if (uppercaseFirstChar && str.length > 0) {
+    if (caseSensetiveOptions === StringCaseSensetiveOptions.Default && str.length > 0) {
       str = str[0].toUpperCase() + str.substring(1, str.length - 1);
     }
 
@@ -219,14 +298,20 @@ export class MockDataGenerator {
 
   public generateRandomString(
     length: number,
-    useUppercase: boolean,
+    caseSensetiveOptions: StringCaseSensetiveOptions,
     useNumbers: boolean
   ): string {
     let str = '';
-    let charts = this.lowercaseChart;
 
-    if (useUppercase) {
-      charts += this.uppercaseChart;
+    let charts = '';
+    if (caseSensetiveOptions === StringCaseSensetiveOptions.Default) {
+      charts = this.uppercaseChart + this.lowercaseChart;
+    }
+    else if (caseSensetiveOptions === StringCaseSensetiveOptions.AllLowercase) {
+      charts = this.lowercaseChart;
+    }
+    else if (caseSensetiveOptions === StringCaseSensetiveOptions.AllUppercase) {
+      charts = this.uppercaseChart;
     }
 
     if (useNumbers) {
