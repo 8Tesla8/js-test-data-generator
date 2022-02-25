@@ -61,14 +61,14 @@ export class DataGeneratorService {
 
     let numberParam = new NumberParameters();
     numberParam.startNumber = 20;
-    numberParam.startNumber = 30;
+    numberParam.endNumber = 30;
     numberParam.float = false;
     numberParam.convertToString = true;
 
     let floatNumberParam = new NumberParameters();
     floatNumberParam.startNumber = 3;
-    floatNumberParam.startNumber = 10;
-
+    floatNumberParam.endNumber = 10;
+    floatNumberParam.floatPrecisions = 2;
 
     let props: MockDataProperty[] = [
       {

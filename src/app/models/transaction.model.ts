@@ -3,7 +3,7 @@ export class Transaction {
     public startDate: Date;
     public endDate: Date;
     public success: boolean;
-    public wallet: string;
-    public cost: number;    
+    public wallet: number;
+    public cost: string;    
     public fees: number;
 }
