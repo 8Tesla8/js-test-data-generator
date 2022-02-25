@@ -29,7 +29,7 @@ export class MockDataProperty {
 
 @Injectable()
 export class MockDataGenerator {
-  public create1(params: MockDataProperty[]): any {
+  public create(params: MockDataProperty[]): any {
     let obj: any = new Object();
 
     params.forEach((pr) => {
@@ -107,110 +107,110 @@ export class MockDataGenerator {
     return obj;
   }
 
-  public create(params: MockDataProperty[]): any {
-    let obj: any = new Object();
+  // public create(params: MockDataProperty[]): any {
+  //   let obj: any = new Object();
 
-    params.forEach((pr) => {
-      let type = pr.dataType;
-      let key = pr.propName;
-      let value = null;
+  //   params.forEach((pr) => {
+  //     let type = pr.dataType;
+  //     let key = pr.propName;
+  //     let value = null;
 
-      switch (type) {
-        case DataType.Null:
-          value = null;
-          break;
+  //     switch (type) {
+  //       case DataType.Null:
+  //         value = null;
+  //         break;
 
-        case DataType.Undefined:
-          value = undefined;
-          break;
+  //       case DataType.Undefined:
+  //         value = undefined;
+  //         break;
 
-        case DataType.Boolean:
-          value = this.generateRandomBoolean();
-          break;
+  //       case DataType.Boolean:
+  //         value = this.generateRandomBoolean();
+  //         break;
 
-        case DataType.Number:
-          value = this.generateRandomNumberBeetween(1, 1000, false);
-          break;
+  //       case DataType.Number:
+  //         value = this.generateRandomNumberBeetween(1, 1000, false);
+  //         break;
 
-        // case DataType.NumberAsString:
-        //   value = this.generateRandomNumberBeetween(1, 1000, false).toString();
-        //   break;
+  //       // case DataType.NumberAsString:
+  //       //   value = this.generateRandomNumberBeetween(1, 1000, false).toString();
+  //       //   break;
 
-        // case DataType.NumberFloat:
-        //   value = this.generateRandomNumberBeetween(1, 1000, true);
-        //   break;
+  //       // case DataType.NumberFloat:
+  //       //   value = this.generateRandomNumberBeetween(1, 1000, true);
+  //       //   break;
 
-        // case DataType.NumberFloatAsString:
-        //   value = this.generateRandomNumberBeetween(1, 1000, true).toString();
-        //   break;
+  //       // case DataType.NumberFloatAsString:
+  //       //   value = this.generateRandomNumberBeetween(1, 1000, true).toString();
+  //       //   break;
 
-        case DataType.Date:
-          let today = new Date();
-          let pastDay = new Date(today.getDate() - 14);
-          value = this.generateRandomDate(pastDay, today);
-          break;
+  //       case DataType.Date:
+  //         let today = new Date();
+  //         let pastDay = new Date(today.getDate() - 14);
+  //         value = this.generateRandomDate(pastDay, today);
+  //         break;
 
-        case DataType.StringOnlyLowercase:
-          value = this.generateRandomString(
-            this.generateRandomNumberBeetween(10, 20, false),
-            false,
-            false
-          );
-          break;
+  //       case DataType.StringOnlyLowercase:
+  //         value = this.generateRandomString(
+  //           this.generateRandomNumberBeetween(10, 20, false),
+  //           false,
+  //           false
+  //         );
+  //         break;
 
-        case DataType.StringWithUppercase:
-          value = this.generateRandomString(
-            this.generateRandomNumberBeetween(10, 20, false),
-            true,
-            false
-          );
-          break;
+  //       case DataType.StringWithUppercase:
+  //         value = this.generateRandomString(
+  //           this.generateRandomNumberBeetween(10, 20, false),
+  //           true,
+  //           false
+  //         );
+  //         break;
 
-        case DataType.StringWithNumber:
-          value = this.generateRandomString(
-            this.generateRandomNumberBeetween(10, 20, false),
-            true,
-            true
-          );
-          break;
+  //       case DataType.StringWithNumber:
+  //         value = this.generateRandomString(
+  //           this.generateRandomNumberBeetween(10, 20, false),
+  //           true,
+  //           true
+  //         );
+  //         break;
 
-        case DataType.StringName:
-          value = this.generateRandomName(
-            this.generateRandomNumberBeetween(4, 10, false),
-            false,
-            true
-          );
-          break;
+  //       case DataType.StringName:
+  //         value = this.generateRandomName(
+  //           this.generateRandomNumberBeetween(4, 10, false),
+  //           false,
+  //           true
+  //         );
+  //         break;
 
-        case DataType.StringNameOnlyUppercase:
-          value = this.generateRandomName(
-            this.generateRandomNumberBeetween(4, 10, false),
-            true,
-            false
-          );
-          break;
+  //       case DataType.StringNameOnlyUppercase:
+  //         value = this.generateRandomName(
+  //           this.generateRandomNumberBeetween(4, 10, false),
+  //           true,
+  //           false
+  //         );
+  //         break;
 
-        case DataType.StringNameOnlyLowercase:
-          value = this.generateRandomName(
-            this.generateRandomNumberBeetween(4, 10, false),
-            false,
-            false
-          );
-          break;
+  //       case DataType.StringNameOnlyLowercase:
+  //         value = this.generateRandomName(
+  //           this.generateRandomNumberBeetween(4, 10, false),
+  //           false,
+  //           false
+  //         );
+  //         break;
 
-        case DataType.Guid:
-          value = this.generateRandomGuid();
-          break;
+  //       case DataType.Guid:
+  //         value = this.generateRandomGuid();
+  //         break;
 
-        default:
-          throw "MockDataGenerator don't containse case for: DataType." + type;
-      }
+  //       default:
+  //         throw "MockDataGenerator don't containse case for: DataType." + type;
+  //     }
 
-      obj[key] = value;
-    });
+  //     obj[key] = value;
+  //   });
 
-    return obj;
-  }
+  //   return obj;
+  // }
 
   public generateRandomBoolean(): boolean {
     let randomBoolean = Math.random() < 0.5;
