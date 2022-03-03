@@ -20,11 +20,7 @@ export enum DataType {
 export class MockDataProperty {
   public propName: string;
   public dataType: DataType;
-  public parameter:
-    | StringParameters
-    | NumberParameters
-    | DateParameters
-    | BooleanParameters;
+  public parameter: | StringParameters | NumberParameters | DateParameters | BooleanParameters;
 }
 
 @Injectable()
@@ -107,111 +103,6 @@ export class MockDataGenerator {
     return obj;
   }
 
-  // public create(params: MockDataProperty[]): any {
-  //   let obj: any = new Object();
-
-  //   params.forEach((pr) => {
-  //     let type = pr.dataType;
-  //     let key = pr.propName;
-  //     let value = null;
-
-  //     switch (type) {
-  //       case DataType.Null:
-  //         value = null;
-  //         break;
-
-  //       case DataType.Undefined:
-  //         value = undefined;
-  //         break;
-
-  //       case DataType.Boolean:
-  //         value = this.generateRandomBoolean();
-  //         break;
-
-  //       case DataType.Number:
-  //         value = this.generateRandomNumberBeetween(1, 1000, false);
-  //         break;
-
-  //       // case DataType.NumberAsString:
-  //       //   value = this.generateRandomNumberBeetween(1, 1000, false).toString();
-  //       //   break;
-
-  //       // case DataType.NumberFloat:
-  //       //   value = this.generateRandomNumberBeetween(1, 1000, true);
-  //       //   break;
-
-  //       // case DataType.NumberFloatAsString:
-  //       //   value = this.generateRandomNumberBeetween(1, 1000, true).toString();
-  //       //   break;
-
-  //       case DataType.Date:
-  //         let today = new Date();
-  //         let pastDay = new Date(today.getDate() - 14);
-  //         value = this.generateRandomDate(pastDay, today);
-  //         break;
-
-  //       case DataType.StringOnlyLowercase:
-  //         value = this.generateRandomString(
-  //           this.generateRandomNumberBeetween(10, 20, false),
-  //           false,
-  //           false
-  //         );
-  //         break;
-
-  //       case DataType.StringWithUppercase:
-  //         value = this.generateRandomString(
-  //           this.generateRandomNumberBeetween(10, 20, false),
-  //           true,
-  //           false
-  //         );
-  //         break;
-
-  //       case DataType.StringWithNumber:
-  //         value = this.generateRandomString(
-  //           this.generateRandomNumberBeetween(10, 20, false),
-  //           true,
-  //           true
-  //         );
-  //         break;
-
-  //       case DataType.StringName:
-  //         value = this.generateRandomName(
-  //           this.generateRandomNumberBeetween(4, 10, false),
-  //           false,
-  //           true
-  //         );
-  //         break;
-
-  //       case DataType.StringNameOnlyUppercase:
-  //         value = this.generateRandomName(
-  //           this.generateRandomNumberBeetween(4, 10, false),
-  //           true,
-  //           false
-  //         );
-  //         break;
-
-  //       case DataType.StringNameOnlyLowercase:
-  //         value = this.generateRandomName(
-  //           this.generateRandomNumberBeetween(4, 10, false),
-  //           false,
-  //           false
-  //         );
-  //         break;
-
-  //       case DataType.Guid:
-  //         value = this.generateRandomGuid();
-  //         break;
-
-  //       default:
-  //         throw "MockDataGenerator don't containse case for: DataType." + type;
-  //     }
-
-  //     obj[key] = value;
-  //   });
-
-  //   return obj;
-  // }
-
   public generateRandomBoolean(): boolean {
     let randomBoolean = Math.random() < 0.5;
     return randomBoolean;
@@ -224,11 +115,7 @@ export class MockDataGenerator {
     return date;
   }
 
-  public generateRandomNumberBeetween(
-    from: number,
-    to: number,
-    float: boolean,
-    floatPrecisions: number = 0
+  public generateRandomNumberBeetween(from: number, to: number, float: boolean, floatPrecisions: number = 0
   ): number {
     let min = from;
     let max = to;
@@ -245,7 +132,7 @@ export class MockDataGenerator {
     return num;
   }
 
-  // string start
+  //#region string start
 
   private vowelsCharts = 'aeiouy';
   private consonantsCharts = 'bcdfghjklmnpqrstvwxz';
@@ -325,9 +212,8 @@ export class MockDataGenerator {
     return str;
   }
 
-  // string end
+  //#endregion end string
 
-  //check
   public generateRandomGuid(): string {
     //pattern 8-4-4-12
     // efa45702-8acb-4e10-bdd2-75f9d8b0ca7c
